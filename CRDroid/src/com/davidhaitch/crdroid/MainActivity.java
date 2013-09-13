@@ -2,35 +2,37 @@
 package com.davidhaitch.crdroid;
 
 import android.support.v4.app.FragmentTransaction;
-import android.widget.TextView;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity
-    extends SherlockActivity
+    extends SherlockFragmentActivity
     implements TabListener
 {
-
-    @ViewById
-    TextView hello;
     private String[] locations;
-
+    
+    
     @AfterViews
-    void afterViews() {
+    void afterViews()
+    {
         locations = getResources().getStringArray(R.array.locations);
         configureActionBar();
     }
 
-    private void configureActionBar() {
+    private void configureActionBar()
+    {
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        for (String location: locations) {
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        for (String location: locations) 
+        {
             Tab tab = getSupportActionBar().newTab();
             tab.setText(location);
             tab.setTabListener(this);
@@ -39,15 +41,24 @@ public class MainActivity
     }
 
     @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+    public void onTabSelected(Tab tab, FragmentTransaction ft)
+    {
+    	if(tab.getPosition() == 0)
+    		ft.replace(R.id.fragment_container, new RadioFragment_());
+    	else if(tab.getPosition() == 1)
+    		ft.replace(R.id.fragment_container, new ChatFragment_());
     }
-
+    
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getSupportMenuInflater();
         return true;
     }
+    
     @Override
- public void onTabUnselected(Tab tab, FragmentTransaction ft) {}@Override
-public void onTabReselected(Tab tab, FragmentTransaction ft) {}
+    public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
+    
+    @Override
+    public void onTabReselected(Tab tab, FragmentTransaction ft) {}
 }

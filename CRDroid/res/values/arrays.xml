@@ -2,10 +2,9 @@
 <resources>
 
 	<string-array name="locations">
-		<item>Home</item>
-		<item>Email</item>
-		<item>Calendar</item>
-		<item>Browser</item>
+		<item>Listen</item>
+		<item>Chat</item>
+		<item>Schedule</item>
 	</string-array>
 
 </resources>

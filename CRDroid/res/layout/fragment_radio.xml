@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/background_gradient">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo" >
+
+    </ImageView>
+		<TextView
+		    android:id="@+id/ListenersTextView"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="8dp"
+		    android:layout_marginLeft="16dp"
+		    android:layout_marginRight="16dp"
+		    android:text="Listening Now!"
+		    android:gravity="center"
+		    style="@style/TextStyle"
+		    android:textSize="14dp" />
+    <Button
+        android:id="@+id/PlayButton"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Play ►"
+        android:textColor="#FFFFFF" />
+    <LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:orientation="horizontal"
+			android:weightSum="5" >
+
+			<TextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:gravity="right"
+				android:singleLine="true"
+				android:text="Artist:"
+				style="@style/TextStyle"
+				android:textSize="20dp" />
+
+			<TextView
+				android:id="@+id/artist"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_weight="1"
+				android:ellipsize="marquee"
+				android:focusable="true"
+				android:focusableInTouchMode="true"
+				android:marqueeRepeatLimit="marquee_forever"
+				android:scrollHorizontally="true"
+				android:singleLine="true"
+				style="@style/TextStyle"
+				android:textColorLink="#ff8000"
+				android:textSize="20dp" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:orientation="horizontal"
+			android:weightSum="5" >
+
+			<TextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:gravity="right"
+				android:singleLine="true"
+				android:text="Title:"
+				style="@style/TextStyle"
+				android:textSize="20dp" />
+
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_weight="1"
+				android:ellipsize="marquee"
+				android:focusable="true"
+				android:focusableInTouchMode="true"
+				android:marqueeRepeatLimit="marquee_forever"
+				android:scrollHorizontally="true"
+				android:singleLine="true"
+				style="@style/TextStyle"
+				android:textColorLink="#ff8000"
+				android:textSize="20dp" />
+    
+			</LinearLayout>
+</LinearLayout>
