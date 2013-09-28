@@ -1,16 +1,21 @@
 package com.davidhaitch.crdroid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.TextChange;
 import com.googlecode.androidannotations.annotations.UiThread;
@@ -23,88 +28,84 @@ public class ChatFragment extends SherlockFragment
 	ListView chatListView;
 	
 	@ViewById
+	Button sendMessageButton;
+	
+	@ViewById
 	EditText chatMessageBox;
 	
 	private int lastMessageCount = 0;
 	
 	private IrcMessageAdapter ircMessageAdapter;
 	
-	private static IrcWrapper ircWrapper = null;
+	private MonitorChatTask monitorChatTask;
+	
+	private static IrcService ircService;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		if(ircWrapper == null)
+	{	
+		if(((MainActivity)getActivity()).isIrcServiceBound && ircService == null)
 		{
-			ircWrapper = new IrcWrapper();
-		}
-		
-		if(!ircWrapper.isConnected())
-		{
-			InitIrcWrapper();
+			ircService = ((MainActivity)getActivity()).ircServiceBinder.getService();
 		}
 		
 		Activity activity = this.getActivity();
 		int layoutResource = R.layout.layout_irc_message;
-		ircMessageAdapter = new IrcMessageAdapter(activity, layoutResource, ircWrapper.MessageHistory);
+		ircMessageAdapter = new IrcMessageAdapter(activity, layoutResource, ircService.irc.MessageHistory);
 		SetUpChatView();
-		new MonitorChatTask().execute(ircWrapper);
+		monitorChatTask = new MonitorChatTask();
+		monitorChatTask.execute();
         return null;
     }
 	
-	@TextChange(R.id.chatMessageBox)
-	void OnMessageType(CharSequence text)
+	@Override
+	public void onDestroyView()
 	{
-		String textStr = text.toString();
-		if(textStr.contains("\n"))
-		{
-			textStr.replace('\n', ' ');
-			ircWrapper.SendMessage(textStr);
-			chatMessageBox.setText("");
-			chatMessageBox.clearFocus();
-			chatListView.requestFocus();
-		}
+		super.onDestroyView();
+		chatMessageBox.clearFocus();
+		chatListView.requestFocus();
+		monitorChatTask.cancel(true);
 	}
 	
-	@Background
-	void InitIrcWrapper()
+	@Click(R.id.sendMessageButton)
+	void onSendMessageClick()
 	{
-		ircWrapper.Init("David_Haitch_CRDroid");
+		ircService.irc.SendMessage(chatMessageBox.getText().toString());
+		chatMessageBox.setText("");
 	}
+
 	
 	@UiThread
 	void SetUpChatView()
 	{
+		chatListView.setSelector(android.R.color.transparent); 
 		chatListView.setAdapter(ircMessageAdapter);	
 	}
 
 	@UiThread
-	void RestockChatView()
+	void ReframeChatView()
 	{
 		chatListView.setSelection(ircMessageAdapter.getCount() - 1);
 		lastMessageCount = ircMessageAdapter.getCount();
 	}
 	
-	class MonitorChatTask extends AsyncTask<IrcWrapper, Void, Void>
+	class MonitorChatTask extends AsyncTask<Void, Void, Void>
     {
-        private Boolean running = true;
         @Override
-        protected Void doInBackground(IrcWrapper... ghost)
+        protected Void doInBackground(Void... nulls)
         {
             try
             {
             	this.publishProgress((Void[])null);
-            	while(running)
+            	while(true)
             	{
-            		if(ChatFragment.ircWrapper.MessageHistory.size() > 0 && ChatFragment.ircWrapper.MessageHistory.size() > ChatFragment.this.lastMessageCount)
+            		if(ChatFragment.ircService.irc.MessageHistory.size() > 0 && ChatFragment.ircService.irc.MessageHistory.size() > ChatFragment.this.lastMessageCount)
             		{ 	
-            			ChatFragment.this.RestockChatView();
+            			ChatFragment.this.ReframeChatView();
             		}
             		
             		Thread.sleep(250);
             	}
-            	
-                return null;
             }
             catch (Exception e)
             {

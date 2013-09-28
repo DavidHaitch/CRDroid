@@ -26,7 +26,6 @@ class InitializeIrcWrapperTask extends AsyncTask<Void, Void, Void>
     {
         try
         {
-        	IrcConnectionSingleton.getInstance().Irc.Init("David_Haitch_Testing");
             return null;
         }
         catch (Exception e)

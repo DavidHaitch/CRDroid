@@ -7,17 +7,15 @@ package com.davidhaitch.crdroid;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.davidhaitch.crdroid.R.layout;
-import com.googlecode.androidannotations.api.BackgroundExecutor;
 
 public final class ChatFragment_
     extends ChatFragment
@@ -38,23 +36,16 @@ public final class ChatFragment_
     private void afterSetContentView_() {
         chatListView = ((ListView) findViewById(com.davidhaitch.crdroid.R.id.chatListView));
         chatMessageBox = ((EditText) findViewById(com.davidhaitch.crdroid.R.id.chatMessageBox));
+        sendMessageButton = ((Button) findViewById(com.davidhaitch.crdroid.R.id.sendMessageButton));
         {
-            final TextView view = ((TextView) findViewById(com.davidhaitch.crdroid.R.id.chatMessageBox));
+            View view = findViewById(com.davidhaitch.crdroid.R.id.sendMessageButton);
             if (view!= null) {
-                view.addTextChangedListener(new TextWatcher() {
+                view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        ChatFragment_.this.OnMessageType(s);
-                    }
-
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    public void onClick(View view) {
+                        ChatFragment_.this.onSendMessageClick();
                     }
 
                 }
@@ -90,14 +81,14 @@ public final class ChatFragment_
     }
 
     @Override
-    public void RestockChatView() {
+    public void ReframeChatView() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
                 try {
-                    ChatFragment_.super.RestockChatView();
+                    ChatFragment_.super.ReframeChatView();
                 } catch (RuntimeException e) {
                     Log.e("ChatFragment_", "A runtime exception was thrown while executing code in a runnable", e);
                 }
@@ -116,24 +107,6 @@ public final class ChatFragment_
             public void run() {
                 try {
                     ChatFragment_.super.SetUpChatView();
-                } catch (RuntimeException e) {
-                    Log.e("ChatFragment_", "A runtime exception was thrown while executing code in a runnable", e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void InitIrcWrapper() {
-        BackgroundExecutor.execute(new Runnable() {
-
-
-            @Override
-            public void run() {
-                try {
-                    ChatFragment_.super.InitIrcWrapper();
                 } catch (RuntimeException e) {
                     Log.e("ChatFragment_", "A runtime exception was thrown while executing code in a runnable", e);
                 }

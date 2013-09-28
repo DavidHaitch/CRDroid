@@ -12,6 +12,12 @@ public class IrcMessage
 	{
 	}
 	
+	public IrcMessage(String message)
+	{
+		Message = message;
+		Sender = "";
+	}
+	
 	public IrcMessage(String channel, String sender, String login, String hostname, String message)
 	{
 		Channel = channel;

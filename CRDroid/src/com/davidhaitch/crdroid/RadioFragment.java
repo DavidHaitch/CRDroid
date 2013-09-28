@@ -4,7 +4,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.support.v4.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +30,27 @@ public class RadioFragment extends SherlockFragment
 {
 	@ViewById
 	Button PlayButton;
-	
+
 	@ViewById
 	TextView ListenersTextView;
 	
-	@ViewById
-	TextView artist;
-	
-	@ViewById
-	TextView title;
-	
 	private StreamStatistics stats;
 	
+	NotificationCompat.Builder notificationBuilder;
+	NotificationManager notificationManager;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		if(notificationBuilder == null)
+		{
+			notificationBuilder = new NotificationCompat.Builder(getActivity());
+		}
+		
+		if(notificationManager == null)
+		{
+			notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+		}
+		
 		SetButtonState();
 		LoadStatsLoop();
         return null;
@@ -62,6 +74,16 @@ public class RadioFragment extends SherlockFragment
 	{
 		RadioPlayerSingleton.getInstance().TogglePlayStream();
 		RadioPlayerSingleton.getInstance().isLoading = false;
+		
+		if(RadioPlayerSingleton.getInstance().IsPlaying())
+		{
+			notificationManager.notify(101, notificationBuilder.getNotification());
+		}
+		else
+		{
+			notificationManager.cancel(101);
+		}
+		
 		SetButtonState();
 	}
 
@@ -90,9 +112,20 @@ public class RadioFragment extends SherlockFragment
 	@UiThread
 	void UpdateStats()
 	{
-		ListenersTextView.setText(stats.CurrentListeners + " Now Listening!");
-		title.setText(stats.SongHistory.get(0).SongName);
-		artist.setText(stats.SongHistory.get(0).Artist);
+		ListenersTextView.setText(stats.CurrentListeners + " Listening Now To " + stats.ServerTitle + "!");
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(stats.SongHistory.get(0).SongName);
+        ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(stats.SongHistory.get(0).Artist);
+        notificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+        notificationBuilder.setContentTitle(stats.SongHistory.get(0).SongName);
+        notificationBuilder.setContentText(stats.SongHistory.get(0).Artist);
+        PendingIntent currentIntent = PendingIntent.getActivity(getActivity(), 0, getActivity().getIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationBuilder.setContentIntent(currentIntent);
+        notificationBuilder.setOngoing(true);
+        
+        if(RadioPlayerSingleton.getInstance().IsPlaying())
+        {
+        	
+        }
 	}
 	
 	@Background

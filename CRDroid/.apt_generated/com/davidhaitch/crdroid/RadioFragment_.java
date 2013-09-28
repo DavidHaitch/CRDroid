@@ -34,10 +34,8 @@ public final class RadioFragment_
     }
 
     private void afterSetContentView_() {
-        artist = ((TextView) findViewById(com.davidhaitch.crdroid.R.id.artist));
-        PlayButton = ((Button) findViewById(com.davidhaitch.crdroid.R.id.PlayButton));
-        title = ((TextView) findViewById(com.davidhaitch.crdroid.R.id.title));
         ListenersTextView = ((TextView) findViewById(com.davidhaitch.crdroid.R.id.ListenersTextView));
+        PlayButton = ((Button) findViewById(com.davidhaitch.crdroid.R.id.PlayButton));
         {
             View view = findViewById(com.davidhaitch.crdroid.R.id.PlayButton);
             if (view!= null) {
@@ -136,14 +134,14 @@ public final class RadioFragment_
     }
 
     @Override
-    public void OperateRadio() {
+    public void LoadStats() {
         BackgroundExecutor.execute(new Runnable() {
 
 
             @Override
             public void run() {
                 try {
-                    RadioFragment_.super.OperateRadio();
+                    RadioFragment_.super.LoadStats();
                 } catch (RuntimeException e) {
                     Log.e("RadioFragment_", "A runtime exception was thrown while executing code in a runnable", e);
                 }
@@ -154,14 +152,14 @@ public final class RadioFragment_
     }
 
     @Override
-    public void LoadStats() {
+    public void OperateRadio() {
         BackgroundExecutor.execute(new Runnable() {
 
 
             @Override
             public void run() {
                 try {
-                    RadioFragment_.super.LoadStats();
+                    RadioFragment_.super.OperateRadio();
                 } catch (RuntimeException e) {
                     Log.e("RadioFragment_", "A runtime exception was thrown while executing code in a runnable", e);
                 }

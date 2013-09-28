@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     android:background="@drawable/background_gradient" >
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/chatMessageBox"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical" >
 
         <ListView
             android:id="@+id/chatListView"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent"
+            android:layout_weight="8"
+            android:background="#00FFFFFF" >
         </ListView>
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/chatMessageBox"
+        
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="36dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="#FFFFFF"
-        android:ems="10" />
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="horizontal" >
 
-</RelativeLayout>
+	    <EditText
+	        android:id="@+id/chatMessageBox"
+	        android:layout_width="wrap_content"
+	        android:layout_height="36dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginBottom="4dp"
+	        android:layout_toLeftOf="@+id/sendMessageButton"
+	        android:background="#55FFFFFF"
+	        android:ems="10"
+	        android:gravity="left"
+	        android:inputType="textCapSentences" >
+
+	        <requestFocus
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </EditText>
+
+	    <Button
+	        android:id="@+id/sendMessageButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:gravity="right"
+	        android:text="Send" />
+
+    </RelativeLayout>
+
+</LinearLayout>

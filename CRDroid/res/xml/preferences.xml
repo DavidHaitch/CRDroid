@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="Settings">
+    <PreferenceCategory 
+        android:title="Chat Settings"
+        android:key="pref_key_settings">
+        <EditTextPreference
+            android:key="username"
+            android:summary="Your username in the CR chat."
+            android:title="Username" />
+                <EditTextPreference
+            android:key="nickservpassword"
+            android:summary="Your NickServ password. Leave blank if you don't have one."
+            android:title="NickServ Password" />
+        </PreferenceCategory>      
+        <PreferenceCategory android:title="Version">
+            <Preference android:title="Beta Release B" android:summary="Report bugs to David_Haitch in the chat, or email to info@ponify.me"/>
+        </PreferenceCategory>
+</PreferenceScreen>
